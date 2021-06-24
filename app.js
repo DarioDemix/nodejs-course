@@ -1,6 +1,8 @@
 const bodyParser = require("body-parser");
-
 const express = require("express");
+
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
 
 const app = express();
 
@@ -9,22 +11,8 @@ const port = 3000;
 // parser
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/add-product", (req, res, next) => {
-  console.log("In another middleware");
-  res.send(
-    "<form action='/product' method='POST'><input type='text'name='title'><button type='submit'>Add product</button></form>"
-  );
-});
-
-app.post("/product", (req, res, next) => {
-  console.log(req.body);
-  res.redirect("/");
-});
-
-app.use("/", (req, res, next) => {
-  console.log("In another middleware");
-  res.send("<h1>Hello from Express</h1>");
-});
+app.use(adminRoutes);
+app.use(shopRoutes);
 
 app.listen(port);
 console.log(`Server created at http://localhost:${port}`);
