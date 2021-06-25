@@ -8,8 +8,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  console.log("shop.js => ", products);
-  res.sendFile(path.join(`${rootDir}`, `views`, `shop.html`));
+  res.render("shop", { products, docTitle: "My Shop" });
 });
 
 module.exports = router;

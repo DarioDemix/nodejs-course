@@ -8,8 +8,13 @@ const app = express();
 
 const port = 3000;
 
+app.set("view engine", "pug");
+app.set("views", "views"); // default is already views/
+
 // parser
 app.use(express.urlencoded({ extended: false }));
+
+// serving static content
 app.use(express.static(path.join(__dirname, `public`)));
 
 app.use("/admin", routes);
