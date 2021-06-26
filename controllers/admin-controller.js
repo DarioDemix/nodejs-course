@@ -4,7 +4,7 @@ exports.getAdminProducts = (req, res, next) => {
   Product.fetchAll(products => {
     res.render("admin/products", {
       products,
-      docTitle: "Admin Products",
+      pageTitle: "Admin Products",
       path: "/admin/products",
       links: req.links,
     });
@@ -13,7 +13,7 @@ exports.getAdminProducts = (req, res, next) => {
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/add-product", {
-    docTitle: "Add Product",
+    pageTitle: "Add Product",
     path: "/admin/add-product",
     links: req.links,
   });
