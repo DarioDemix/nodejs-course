@@ -2,6 +2,7 @@
   { "href": "/", "label": "Shop" },
   { "href": "/products", "label": "Products" },
   { "href": "/cart", "label": "Cart" },
+  { "href": "/orders", "label": "Orders" },
   { "href": "/admin/add-product", "label": "Add Product" },
   { "href": "/admin/products", "label": "Admin Products" }
 ]
