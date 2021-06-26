@@ -9,7 +9,7 @@ const app = express();
 
 const port = 3000;
 
-app.engine("hbs", expressHbs());
+app.engine("hbs", expressHbs({ defaultLayout: "main-layout", extname: "hbs" }));
 app.set("view engine", "hbs");
 app.set("views", "views"); // default is already views/
 
