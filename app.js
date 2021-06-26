@@ -5,6 +5,7 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 const errorController = require('./controllers/error-controller');
+const navigationController = require('./controllers/navigation-controller');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 // serving static content
 app.use(express.static(path.join(__dirname, `public`)));
 
+app.use(navigationController.setLinksMiddleware);
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 

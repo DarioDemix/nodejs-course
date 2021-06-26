@@ -1,9 +1,16 @@
-const Product = require("../models/product");
+exports.getAdminProducts = (req, res, next) => {
+  res.render("admin/products", {
+    docTitle: "Admin Products",
+    path: "/admin/products",
+    links: req.links,
+  });
+};
 
 exports.getAddProduct = (req, res, next) => {
-  res.render("add-product", {
+  res.render("admin/add-product", {
     docTitle: "Add Product",
     path: "/admin/add-product",
+    links: req.links,
   });
 };
 
@@ -13,14 +20,4 @@ exports.postAddProduct = (req, res, next) => {
 
   product.save();
   res.redirect("/");
-};
-
-exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop", {
-      products,
-      docTitle: "My Shop",
-      path: "/",
-    });
-  });
 };
