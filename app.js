@@ -1,9 +1,10 @@
 const path = require("path");
 const express = require("express");
 
-const { routes, products } = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
-const expressHbs = require("express-handlebars");
+
+const errorController = require('./controllers/error');
 
 const app = express();
 
@@ -18,12 +19,10 @@ app.use(express.urlencoded({ extended: false }));
 // serving static content
 app.use(express.static(path.join(__dirname, `public`)));
 
-app.use("/admin", routes);
+app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-  res.status(404).render("404", { docTitle: "Page not found" });
-});
+app.use(errorController.getNotFound);
 
 app.listen(port);
 console.log(`Server created at http://localhost:${port}`);
