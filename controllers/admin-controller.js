@@ -1,10 +1,13 @@
 const Product = require("../models/product");
 
 exports.getAdminProducts = (req, res, next) => {
-  res.render("admin/products", {
-    docTitle: "Admin Products",
-    path: "/admin/products",
-    links: req.links,
+  Product.fetchAll(products => {
+    res.render("admin/products", {
+      products,
+      docTitle: "Admin Products",
+      path: "/admin/products",
+      links: req.links,
+    });
   });
 };
 
