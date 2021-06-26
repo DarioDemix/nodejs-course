@@ -23,4 +23,6 @@
 
 .product__description {
   text-align: center;
+  height: inherit;
+  line-break: anywhere;
 }

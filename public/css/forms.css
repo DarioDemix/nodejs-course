@@ -9,6 +9,13 @@
   margin-bottom: 0.25rem;
 }
 
+#description {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.25rem;
+  height: 60px;
+}
+
 .form-control input {
   border: 1px solid #a1a1a1;
   font: inherit;

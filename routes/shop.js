@@ -8,7 +8,12 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  res.render("shop", { products, docTitle: "My Shop", path: "/" });
+  res.render("shop", {
+    products,
+    docTitle: "My Shop",
+    path: "/",
+    hasProducts: products.length > 0,
+  });
 });
 
 module.exports = router;

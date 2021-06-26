@@ -3,12 +3,14 @@ const express = require("express");
 
 const { routes, products } = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const expressHbs = require("express-handlebars");
 
 const app = express();
 
 const port = 3000;
 
-app.set("view engine", "pug");
+app.engine("hbs", expressHbs());
+app.set("view engine", "hbs");
 app.set("views", "views"); // default is already views/
 
 // parser
