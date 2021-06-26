@@ -17,10 +17,13 @@ exports.getCheckout = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  res.render("shop/index", {
-    docTitle: "Shop",
-    path: "/",
-    links: req.links,
+  Product.fetchAll((products) => {
+    res.render("shop/index", {
+      products,
+      docTitle: "Shop",
+      path: "/",
+      links: req.links,
+    });
   });
 };
 
