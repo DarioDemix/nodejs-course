@@ -7,6 +7,8 @@ const shopRoutes = require("./routes/shop");
 const errorController = require('./controllers/error-controller');
 const navigationController = require('./controllers/navigation-controller');
 
+const sequelize = require('./util/database');
+
 const app = express();
 
 const port = 3000;
@@ -26,5 +28,12 @@ app.use(shopRoutes);
 
 app.use(errorController.getNotFound);
 
-app.listen(port);
-console.log(`Server created at http://localhost:${port}`);
+sequelize.sync()
+    .then(result => {
+
+        app.listen(port);
+        console.log(`Server created at http://localhost:${port}`);
+
+    })
+    .catch(err => console.log(err));
+
