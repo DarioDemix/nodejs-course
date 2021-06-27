@@ -23,14 +23,17 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const { productId } = req.params;
-  Product.findById(productId, product => {
-    res.render('shop/product-detail', {
-      pageTitle: `${product.title} detail`,
-      product,
-      path: '/products',
-      links: req.links
+  Product.findById(productId)
+    .then(({rows}) => {
+      const product = rows[0];
+      res.render('shop/product-detail', {
+        pageTitle: `${product.title} detail`,
+        product,
+        path: '/products',
+        links: req.links
+      })
     })
-  });
+    .catch(err => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {

@@ -11,7 +11,10 @@ module.exports = class Product {
   }
 
   save() {
-   
+   return db.query(
+      'INSERT INTO products (title, price, "imageUrl", description) VALUES ($1, $2, $3, $4)', // Prevent SQL Injection
+      [this.title, this.price, this.imageUrl, this.description]
+    );
   }
 
   static fetchAll() {
@@ -19,6 +22,7 @@ module.exports = class Product {
   }
 
   static findById(id, cb) {
+    return db.query('SELECT * FROM products WHERE id = $1', [id]);
   }
 
   static deleteById(id, cb) {
