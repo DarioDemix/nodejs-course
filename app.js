@@ -7,11 +7,6 @@ const shopRoutes = require("./routes/shop");
 const errorController = require('./controllers/error-controller');
 const navigationController = require('./controllers/navigation-controller');
 
-const db = require('./util/database');
-db.query('SELECT * FROM products')
-    .then(data => console.log(data.rows));
-db.end();
-
 const app = express();
 
 const port = 3000;

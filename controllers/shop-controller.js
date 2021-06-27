@@ -1,14 +1,23 @@
 const Product = require("../models/product");
 const Cart = require('../models/Cart');
 
-exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop/product-list", {
-      products,
-      pageTitle: "My Shop",
-      path: "/products",
+function fetchProdsAndRender(req, res, {viewToRender, pageTitle, path}) {
+  Product.fetchAll().then(({ rows }) => {
+    res.render(viewToRender, {
+      products: rows,
+      pageTitle,
+      path,
       links: req.links,
     });
+  })
+  .catch(err => console.log(err));
+}
+
+exports.getProducts = (req, res, next) => {
+  fetchProdsAndRender(req, res, {
+    viewToRender: "shop/product-list",
+    pageTitle: "My Shop",
+    path: "/products"
   });
 };
 
@@ -26,7 +35,7 @@ exports.getProduct = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   Cart.getCart(cart => {
-    Product.fetchAll(products => {
+    Product.fetchAll().then(products => {
       const cartProducts = []
       products.forEach(product => {
         const cartProductData = cart.products.find(prod => prod.id === product.id);
@@ -75,12 +84,9 @@ exports.getCheckout = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop/index", {
-      products,
-      pageTitle: "Shop",
-      path: "/",
-      links: req.links,
-    });
+  fetchProdsAndRender(req, res, {
+    viewToRender: "shop/index",
+    pageTitle: "Shop",
+    path: "/"
   });
 };
