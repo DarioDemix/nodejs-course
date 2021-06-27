@@ -32,7 +32,7 @@ exports.getEditProduct = (req, res, next) => {
   const { productId } = req.params;
   const { edit } = req.query
 
-  if(!Boolean(edit)) res.redirect('/');
+  if (!Boolean(edit)) res.redirect('/');
 
   Product.findById(productId, product => {
     res.render("admin/edit-product", {
@@ -41,6 +41,13 @@ exports.getEditProduct = (req, res, next) => {
       links: req.links,
       editing: edit,
       product
-  });
+    });
   });
 };
+
+exports.postEditProduct = (req, res, next) => {
+  const { productId, title, price, description, imageUrl } = req.body
+  const updatedProduct = new Product(productId, title, imageUrl, description, price);
+  updatedProduct.save();
+  res.redirect("/admin/products");
+}
