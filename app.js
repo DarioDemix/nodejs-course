@@ -25,6 +25,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, `public`)));
 
 app.use(navigationController.setLinksMiddleware);
+
+app.use((req, res, next) => {
+    User.findByPk(1).then(user => {
+        req.user = user.dataValues;
+        next();
+    })
+    .catch(err => console.log(err));
+});
+
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
@@ -35,7 +44,18 @@ User.hasMany(Product);
 
 // Associations doesn't work if sequelize.sync is used. You need to use the sync method on the individual models.
 Promise.all([Product.sync(), User.sync()])
-    .then(() => {
+    .then(() => User.findByPk(1))
+    .then(user => {
+        if (!user) { 
+            return User.create({ name: 'Dario', email: 'test@testmail.io'});
+        }
+        return Promise.resolve(user);    
+    })
+    .then(user => {
+
+        console.log(user.dataValues);
+
         app.listen(port);
         console.log(`Server created at http://localhost:${port}`);
-    });
+    })
+    .catch(err => console.log(err));
