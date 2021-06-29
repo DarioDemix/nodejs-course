@@ -2,15 +2,15 @@ const Product = require("../models/product");
 const Cart = require('../models/Cart');
 
 function fetchProdsAndRender(req, res, {viewToRender, pageTitle, path}) {
-  Product.fetchAll().then(({ rows }) => {
+  Product.findAll().then(products => {
     res.render(viewToRender, {
-      products: rows,
+      products,
       pageTitle,
       path,
       links: req.links,
     });
   })
-  .catch(err => console.log(err));
+  .catch(err => { err && console.log(err); });
 }
 
 exports.getProducts = (req, res, next) => {
@@ -23,15 +23,14 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const { productId } = req.params;
-  Product.findById(productId)
-    .then(({rows}) => {
-      const product = rows[0];
+  Product.findByPk(productId)
+    .then(product => {
       res.render('shop/product-detail', {
         pageTitle: `${product.title} detail`,
         product,
         path: '/products',
         links: req.links
-      })
+      });
     })
     .catch(err => console.log(err));
 };

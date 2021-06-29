@@ -206,3 +206,8 @@ form {
 .centered {
   text-align: center;
 }
+
+
+.image {
+  max-width: 19rem;
+}

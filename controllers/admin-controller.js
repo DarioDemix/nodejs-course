@@ -1,4 +1,4 @@
-const Product = require("../models/product");
+const Product = require("../models/Product");
 
 exports.getAdminProducts = (req, res, next) => {
   Product.fetchAll.then(products => {
@@ -22,13 +22,17 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const { title, imageUrl, price, description } = req.body;
-  const product = new Product(null, title, imageUrl, description, Number(price));
 
-  product.save()
-    .then(() => {
-      res.redirect("/");
-    })
-    .catch(err => console.log(err));
+  Product.create({
+    title,
+    imageUrl,
+    price,
+    description
+  })
+  .then(result => console.log("Created!"))
+  .catch(err => err && console.log(err));
+
+  res.redirect("/");
 };
 
 exports.getEditProduct = (req, res, next) => {
