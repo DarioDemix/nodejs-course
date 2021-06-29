@@ -34,8 +34,7 @@ Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
 
 // Associations doesn't work if sequelize.sync is used. You need to use the sync method on the individual models.
-Product.sync({ force: true })
-    .then(() => User.sync({ force: true }))
+Promise.all([Product.sync(), User.sync()])
     .then(() => {
         app.listen(port);
         console.log(`Server created at http://localhost:${port}`);
