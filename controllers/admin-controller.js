@@ -1,7 +1,7 @@
 const Product = require("../models/Product");
 
 exports.getAdminProducts = (req, res, next) => {
-  Product.fetchAll.then(products => {
+  Product.findAll().then(products => {
     res.render("admin/products", {
       products,
       pageTitle: "Admin Products",
@@ -29,10 +29,12 @@ exports.postAddProduct = (req, res, next) => {
     price,
     description
   })
-  .then(result => console.log("Created!"))
+  .then(result => {
+    console.log("Created!"); 
+    res.redirect("/admin/products");
+  })
   .catch(err => err && console.log(err));
 
-  res.redirect("/");
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -41,27 +43,37 @@ exports.getEditProduct = (req, res, next) => {
 
   if (!Boolean(edit)) res.redirect('/');
 
-  Product.findById(productId, product => {
-    res.render("admin/edit-product", {
-      pageTitle: `Edit ${product.title}`,
-      path: "/admin/edit-product",
-      links: req.links,
-      editing: edit,
-      product
-    });
+  Product.findByPk(productId)
+    .then(product => {
+
+      !product && res.redirect('/');
+
+      res.render("admin/edit-product", {
+        pageTitle: `Edit ${product.title}`,
+        path: "/admin/edit-product",
+        links: req.links,
+        editing: edit,
+        product
+      });
   });
 };
 
 exports.postEditProduct = (req, res, next) => {
   const { productId, title, price, description, imageUrl } = req.body
-  const updatedProduct = new Product(productId, title, imageUrl, description, price);
-  updatedProduct.save();
-  res.redirect("/admin/products");
+  
+  Product.update({ productId, title, price, description, imageUrl }, { where: { id: productId } })
+    .then(data => { 
+      console.log("Updated!");
+
+      res.redirect("/admin/products");
+    });
+
 };
 
 exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.params;
-  Product.deleteById(productId, () => {
-    res.redirect("/admin/products");
-  });
+  Product.destroy({where: { id: productId }})
+    .then(() => {
+      res.redirect("/admin/products");
+    });
 };
