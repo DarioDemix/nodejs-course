@@ -8,6 +8,8 @@ const errorController = require('./controllers/error-controller');
 const navigationController = require('./controllers/navigation-controller');
 
 const sequelize = require('./util/database');
+const Product = require('./models/Product');
+const User = require('./models/User');
 
 const app = express();
 
@@ -28,12 +30,13 @@ app.use(shopRoutes);
 
 app.use(errorController.getNotFound);
 
-sequelize.sync()
-    .then(result => {
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
 
+// Associations doesn't work if sequelize.sync is used. You need to use the sync method on the individual models.
+Product.sync({ force: true })
+    .then(() => User.sync({ force: true }))
+    .then(() => {
         app.listen(port);
         console.log(`Server created at http://localhost:${port}`);
-
-    })
-    .catch(err => console.log(err));
-
+    });
